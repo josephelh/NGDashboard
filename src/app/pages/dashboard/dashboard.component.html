@@ -1,0 +1,79 @@
+
+<div class="flex justify-between items-center mb-6">
+  <h2 class="text-xl lg:text-2xl  font-bold">Featured Products</h2>
+
+  <div class="flex items-center gap-4">
+    <!-- Display Mode Toggle Buttons -->
+    <div class="inline-flex rounded-md shadow-sm" role="group">
+      <button (click)="setDisplayMode('card')"
+              [ngClass]="displayMode() === 'card' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700'"
+              class="px-4 py-2 text-sm font-medium border border-gray-200 dark:border-slate-700 rounded-l-lg focus:z-10 focus:ring-2 focus:ring-blue-500">
+        Cards
+      </button>
+      <button (click)="setDisplayMode('table')"
+              [ngClass]="displayMode() === 'table' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700'"
+              class="px-4 py-2 text-sm font-medium border-t border-b border-gray-200 dark:border-slate-700 focus:z-10 focus:ring-2 focus:ring-blue-500">
+        Table
+      </button>
+    </div>
+
+
+  <!-- Page Size Selector Form -->
+  <form class="flex items-center space-x-2">
+    <label for="pageSize" class="text-sm font-medium text-gray-700 dark:text-gray-300">Show:</label>
+    <select id="pageSize"
+            [value]="pageSize()"
+            (change)="onPageSizeChange($event)"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+      <!-- Loop over the options array from the component -->
+      <option *ngFor="let size of pageSizeOptions" [value]="size">
+        {{ size }}
+      </option>
+    </select>
+  </form>
+  </div>
+</div>
+
+<div *ngIf="isLoading()" class="text-center text-slate-500">
+  <p>Loading products...</p>
+</div>
+
+
+
+  
+<div *ngIf="!isLoading()">
+  <!-- Card View -->
+  <div *ngIf="displayMode() === 'card'" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+    <app-product-card *ngFor="let product of products()" [product]="product"></app-product-card>
+  </div>
+
+    <div *ngIf="displayMode() === 'table'">
+    <app-product-table [products]="products()"></app-product-table>
+  </div>
+
+
+</div>
+
+
+<div *ngIf="!isLoading() && products().length > 0" class="mt-8 flex justify-between items-center">
+  <!-- Previous Button -->
+  <button (click)="goToPreviousPage()"
+          [disabled]="currentPage() === 1"
+          class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors
+                 disabled:bg-slate-400 disabled:cursor-not-allowed dark:disabled:bg-slate-600">
+    Previous
+  </button>
+
+  <!-- Page Indicator -->
+  <span class="text-slate-700 dark:text-slate-300 font-medium">
+    Page {{ currentPage() }} of {{ totalPages() }}
+  </span>
+
+  <!-- Next Button -->
+  <button (click)="goToNextPage()"
+          [disabled]="currentPage() === totalPages()"
+          class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors
+                 disabled:bg-slate-400 disabled:cursor-not-allowed dark:disabled:bg-slate-600">
+    Next
+  </button>
+</div>

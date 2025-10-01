@@ -1,0 +1,179 @@
+<div class="flex justify-between items-center mb-6">
+  <h2 class="text-2xl font-bold">Users</h2>
+  <a
+    routerLink="/users/new"
+    data-cy="add-user-button"
+    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+  >
+    Add User
+  </a>
+
+  <div class="flex items-center gap-4">
+    <!-- Display Mode Toggle Buttons -->
+    <div class="inline-flex rounded-md shadow-sm" role="group">
+      <button
+        (click)="setDisplayMode('card')"
+        data-cy="card-view-button"
+        [ngClass]="
+          displayMode() === 'card'
+            ? 'bg-blue-600 text-white'
+            : 'bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700'
+        "
+        class="px-4 py-2 text-sm font-medium border border-gray-200 dark:border-slate-700 rounded-l-lg focus:z-10 focus:ring-2 focus:ring-blue-500"
+      >
+        Cards
+      </button>
+      <button
+        (click)="setDisplayMode('table')"
+        data-cy="table-view-button"
+        [ngClass]="
+          displayMode() === 'table'
+            ? 'bg-blue-600 text-white'
+            : 'bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700'
+        "
+        class="px-4 py-2 text-sm font-medium border-t border-b border-gray-200 dark:border-slate-700 focus:z-10 focus:ring-2 focus:ring-blue-500"
+      >
+        Table
+      </button>
+    </div>
+
+    <!-- Page Size Selector Form -->
+    <form class="flex items-center space-x-2">
+      <label
+        for="pageSize"
+        class="text-sm font-medium text-gray-700 dark:text-gray-300"
+        >Show:</label
+      >
+      <select
+        id="pageSize"
+        [value]="pageSize()"
+        (change)="onPageSizeChange($event)"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      >
+        <!-- Loop over the options array from the component -->
+        <option *ngFor="let size of pageSizeOptions" [value]="size">
+          {{ size }}
+        </option>
+      </select>
+    </form>
+  </div>
+</div>
+
+<!-- Loading State (now driven by a signal) -->
+<div *ngIf="isLoading()" class="text-center text-slate-500">
+  <p>Loading users...</p>
+</div>
+
+<div *ngIf="!isLoading()">
+  <!-- Card View -->
+  <div
+    *ngIf="displayMode() === 'card'"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+  >
+    <app-user-card *ngFor="let user of users()" [user]="user"></app-user-card>
+  </div>
+
+  <!-- Table View -->
+  <div *ngIf="displayMode() === 'table'">
+    <app-user-table
+      [users]="users()"
+      (deletUser)="openDeleteModal($event)"
+    ></app-user-table>
+  </div>
+</div>
+
+<!-- Pagination Controls -->
+<div
+  *ngIf="!isLoading() && users().length > 0"
+  class="mt-8 flex justify-between items-center"
+>
+  <!-- Previous Button -->
+  <button
+    (click)="goToPreviousPage()"
+    [disabled]="currentPage() === 1"
+    class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed dark:disabled:bg-slate-600"
+  >
+    Previous
+  </button>
+
+  <!-- Page Indicator -->
+  <span class="text-slate-700 dark:text-slate-300 font-medium">
+    Page {{ currentPage() }} of {{ totalPages() }}
+  </span>
+
+  <!-- Next Button -->
+  <button
+    (click)="goToNextPage()"
+    [disabled]="currentPage() === totalPages()"
+    class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors disabled:bg-slate-400 disabled:cursor-not-allowed dark:disabled:bg-slate-600"
+  >
+    Next
+  </button>
+</div>
+
+@if (isDeleteModalOpen() && userToDelete(); as user) {
+<!-- Backdrop -->
+<div
+  (click)="closeDeleteModal()"
+  class="fixed inset-0 bg-black/60 z-40 flex items-center justify-center"
+>
+  <!-- Modal Panel -->
+  <div
+    (click)="$event.stopPropagation()"
+    class="bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-md z-50"
+  >
+    <!-- Modal Header -->
+    <div class="flex items-start gap-4">
+      <!-- Warning Icon -->
+      <div
+        class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+      >
+        <svg
+          class="h-6 w-6 text-red-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+          />
+        </svg>
+      </div>
+      <div class="text-left">
+        <h3
+          class="text-lg font-semibold leading-6 text-gray-900 dark:text-white"
+        >
+          Delete User
+        </h3>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          Are you sure you want to delete
+          <strong class="font-bold"
+            >{{ user.firstName }} {{ user.lastName }}</strong
+          >? This action cannot be undone.
+        </p>
+      </div>
+    </div>
+
+    <!-- Modal Footer (Action Buttons) -->
+    <div class="mt-5 sm:mt-4 flex flex-row-reverse gap-3">
+      <button
+        (click)="confirmDelete()"
+        type="button"
+        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto"
+      >
+        Yes, Delete
+      </button>
+      <button
+        (click)="closeDeleteModal()"
+        type="button"
+        class="inline-flex w-full justify-center rounded-md bg-white dark:bg-slate-700 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-slate-600 hover:bg-gray-50 dark:hover:bg-slate-600 sm:w-auto"
+      >
+        No, Cancel
+      </button>
+    </div>
+  </div>
+</div>
+}

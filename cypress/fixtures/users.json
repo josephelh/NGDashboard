@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Terry",
+      "lastName": "Medhurst",
+      "email": "atuny0@sohu.com",
+      "username": "TerryMedhu",
+      "gender": "Male",
+      "birthDate": "15-10-2005",
+      "phone": "+63 791 675 8914",
+      "company": { "name": "Cremin, Inc.", "title": "ABCDEF" },
+      "address": { "city": "kenitra", "state": "Kemitra" },
+      "image": "https://robohash.org/hicveldicta.png"
+    }
+  ],
+  "total": 1,
+  "skip": 0,
+  "limit": 1
+}

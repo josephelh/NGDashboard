@@ -1,0 +1,27 @@
+@if (user(); as user){
+<div
+  [routerLink]="['/users', user.id]"
+  class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md border dark:border-slate-700 flex flex-col items-center text-center h-full hover:shadow-lg cursor-pointer transition-all"
+>
+  <img
+    [src]="user.image"
+    alt="{{ user.firstName }}'s avatar"
+    class="w-24 h-24 rounded-full mb-4 border-2 border-blue-500"
+  />
+  <h3 class="text-xl font-semibold text-blue-500">
+    {{ user.firstName }} {{ user.lastName }}
+  </h3>
+  <p class="text-slate-600 dark:text-slate-400">{{ "@" + user.username }}</p>
+  <p class="text-slate-500 dark:text-slate-300 mt-1">
+    {{ user.company.title }} at {{ user.company.name }}
+  </p>
+  <div class="mt-4 text-sm">
+    <p>
+      <a href="mailto:{{ user.email }}" class="hover:underline">{{
+        user.email
+      }}</a>
+    </p>
+    <p>{{ user.phone }}</p>
+  </div>
+</div>
+}

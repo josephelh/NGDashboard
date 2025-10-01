@@ -1,0 +1,22 @@
+  <div class="bg-white dark:bg-slate-800 rounded-lg shadow-md border dark:border-slate-700 overflow-hidden flex flex-col">
+    <!-- Product Image -->
+     <div class="w-full h-48">
+        <img [src]="product().thumbnail" alt="{{ product().title }} thumbnail" class="w-full h-full">
+     </div>
+  
+
+    <div class="p-4 flex flex-col flex-grow">
+      <!-- Product Details -->
+      <h3 class="text-lg font-semibold mb-2 text-slate-800 dark:text-slate-200 line-clamp-1">{{ product().title }}</h3>
+      <p class="text-sm text-slate-600 dark:text-slate-400 flex-grow line-clamp-3">{{ product().description }}</p>
+
+      <!-- Pricing and Rating -->
+      <div class="mt-4 flex justify-between items-center">
+        <p class="text-xl font-bold text-blue-500">${{ product().price }}</p>
+        <div class="flex items-center bg-yellow-400/20 text-yellow-500 px-2 py-1 rounded-full text-xs font-semibold">
+          <span>{{ product().rating }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 ml-1"><path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.007z" clip-rule="evenodd" /></svg>
+        </div>
+      </div>
+    </div>
+  </div>
