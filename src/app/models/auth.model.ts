@@ -14,6 +14,7 @@ export interface LogedUser {
   firstName: string;
   lastName: string;
   image: string;
+  roles?: string[];
 }
 
 // NEW: Model for the refresh token API response

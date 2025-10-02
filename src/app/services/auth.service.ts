@@ -13,6 +13,9 @@ export class AuthService {
   private router = inject(Router);
   public isLoggedIn = signal<boolean>(!!this.getAccessToken());
   public logedUser = signal<LogedUser | null>(null);
+  public hasRole(role: string): boolean {
+    return this.logedUser()?.roles?.includes(role) ?? false;
+  }
 
   constructor() {
     const token = this.getAccessToken();
@@ -34,6 +37,7 @@ export class AuthService {
             firstName: response.firstName,
             lastName: response.lastName,
             image: response.image,
+            roles: ['admin'],
           };
           this.saveLogedUser(userToSave);
           this.isLoggedIn.set(true);

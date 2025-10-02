@@ -1,8 +1,12 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["**/*.ts"],
   "compilerOptions": {
-    "sourceMap": false,
-    "types": ["cypress"]
-  }
+    "outDir": "../out-tsc/cy",
+    "types": ["cypress", "node"]
+  },
+  "include": ["e2e/**/*.cy.ts", "support/**/*.ts"],
+  // --- ADD THIS BLOCK ---
+  // This tells Cypress's TypeScript config to IGNORE your Jest unit test files.
+  // This is the key to stopping the type conflict.
+  "exclude": ["../src/**/*.spec.ts"]
 }
