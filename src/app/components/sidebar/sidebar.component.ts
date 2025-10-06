@@ -47,6 +47,11 @@ export class SidebarComponent implements OnInit {
       label: 'Users',
       iconName: 'users',
     },
+    {
+      path: '/posts',
+      label: 'Posts',
+      iconName: 'users',
+    },
   ];
 
   constructor() {}

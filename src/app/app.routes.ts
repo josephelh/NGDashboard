@@ -7,6 +7,8 @@ import { authGuard } from './services/auth.guard';
 import { LoginComponent } from './pages/login/login.component';
 import { TodoComponent } from './pages/todo/todo.component';
 import { UserAddComponent } from './pages/user-add/user-add.component';
+import { PostsComponent } from './pages/posts/posts.component';
+import { PostDetalisComponent } from './pages/post-detalis/post-detalis.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -37,6 +39,17 @@ export const routes: Routes = [
   {
     path: 'users/:id',
     component: UserDetailsComponent,
+    canActivate: [authGuard],
+  },
+
+  {
+    path: 'posts',
+    component: PostsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'posts/:id',
+    component: PostDetalisComponent,
     canActivate: [authGuard],
   },
 

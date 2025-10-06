@@ -1,7 +1,7 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
   preset: 'jest-preset-angular',
-  setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
 
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [

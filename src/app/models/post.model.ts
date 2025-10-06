@@ -3,7 +3,7 @@ export interface Post {
   title: string;
   body: string;
   userId: string;
-  tags: [];
+  tags: string[];
   reactions: {
     likes: number;
     dislikes: number;
