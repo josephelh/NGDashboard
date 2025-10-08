@@ -5,7 +5,7 @@
   <p class="text-slate-500">Loading posts...</p>
   } @else if (store.posts().length > 0) {
   <div
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
   >
     @for (post of store.posts(); track post.id) {
     <app-post-card [post]="post"></app-post-card>
